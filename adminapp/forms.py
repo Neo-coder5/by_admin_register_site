@@ -4,19 +4,19 @@ from . import services
 
 
 class FacultyForm(forms.ModelForm):
-	class Meta:
+    class Meta:
         model = Faculty
         fields = '__all__'
         widgets = {
-            'name':forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
 class KafedraForm(forms.ModelForm):
-	class Meta:
-		model = Kafedra
+    class Meta:
+        model = Kafedra
         fields = '__all__'
         widgets = {
-            'name':forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 

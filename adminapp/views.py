@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from adminapp import services
+from adminapp.forms import KafedraForm, FacultyForm
+from adminapp.models import Faculty, Kafedra
 
 
 def login_required_decorator(func):
@@ -41,6 +43,96 @@ def home_page(request):
         }
     }
     return render(request, 'index.html', ctx)
+
+
+@login_required_decorator
+def faculty_create(request):
+    model = Faculty()
+    form = FacultyForm(request.POST, instance=model)
+    if request.POST and form.is_valid():
+        form.save()
+        return redirect("faculty_list")
+    ctx = {
+        'form': form,
+    }
+    return render(request, 'faculty/form.html', ctx)
+
+
+@login_required_decorator
+def faculty_edit(request, pk):
+    model = Faculty.objects.get(pk=pk)
+    form = FacultyForm(request.POST, instance=model)
+    if request.POST and form.is_valid():
+        form.save()
+        return redirect("faculty_list")
+    ctx = {
+        'model': model,
+        'form': form,
+    }
+    return render(request, 'faculty/form.html', ctx)
+
+
+@login_required_decorator
+def faculty_delete(request, pk):
+    model = Faculty.objects.get(pk=pk)
+    model.delete()
+    return redirect("faculty_list")
+
+
+@login_required_decorator
+def faculty_list(request):
+    faculties = Faculty.objects.all()
+
+    ctx = {
+        'faculties': faculties
+    }
+
+    return render(request, 'faculty/list.html', ctx)
+
+
+@login_required_decorator
+def kafedra_create(request):
+    model = Kafedra()
+    form = KafedraForm(request.POST, instance=model)
+    if request.POST and form.is_valid():
+        form.save()
+        return redirect("kafedra_list")
+    ctx = {
+        'form': form,
+    }
+    return render(request, 'kafedra/form.html', ctx)
+
+
+@login_required_decorator
+def kafedra_edit(request, pk):
+    model = Kafedra.objects.get(pk=pk)
+    form = KafedraForm(request.POST, instance=model)
+    if request.POST and form.is_valid():
+        form.save()
+        return redirect("kafedra_list")
+    ctx = {
+        'model': model,
+        'form': form,
+    }
+    return render(request, 'kafedra/form.html', ctx)
+
+
+@login_required_decorator
+def kafedra_delete(request, pk):
+    model = Kafedra.objects.get(pk=pk)
+    model.delete()
+    return redirect("kafedra_list")
+
+
+@login_required_decorator
+def kafedra_list(request):
+    kafedras = Kafedra.objects.all()
+
+    ctx = {
+        'kafedras': kafedras
+    }
+
+    return render(request, 'kafedra/list.html', ctx)
 
 
 class SignUpView(generic.CreateView):
