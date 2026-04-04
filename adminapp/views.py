@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
+from adminapp import services
+
+
 def login_required_decorator(func):
     return login_required(func, login_url='login_page')
 
@@ -29,7 +32,15 @@ def login_page(request):
 
 @login_required_decorator
 def home_page(request):
-    return render(request, 'index.html')
+    faculties = services.get_faculties()
+    kafedras = services.get_kafedra()
+    ctx = {
+        'count': {
+            'faculties': len(faculties),
+            'kafedra': len(kafedras),
+        }
+    }
+    return render(request, 'index.html', ctx)
 
 
 class SignUpView(generic.CreateView):
